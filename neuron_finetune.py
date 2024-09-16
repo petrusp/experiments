@@ -3,7 +3,7 @@ from functools import partial
 from itertools import chain
 from typing import Optional
 
-from datasets import load_dataset, load_from_disk
+from datasets import load_dataset, load_from_disk, Dataset
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -70,7 +70,7 @@ def pack_dataset(dataset, chunk_length=2048):
     return lm_dataset
 
 
-def create_and_save_dataset(model_id: str, dataset_path: str):
+def create_and_save_dataset(model_id: str, dataset: Dataset, dataset_path: str):
     tokenizer = AutoTokenizer.from_pretrained(model_id)
 
     # template dataset to add prompt to each sample
@@ -133,7 +133,7 @@ def main():
     script_args, training_args = parser.parse_args_into_dataclasses()
 
     if script_args.dataset_path is None:
-        create_and_save_dataset(script_args.model_id, "tokenized_dolly")
+        create_and_save_dataset(script_args.model_id, dataset, "tokenized_dolly")
         script_args.dataset_path = "tokenized_dolly"
 
     # set seed
