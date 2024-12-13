@@ -108,5 +108,20 @@ if parsed_response and parsed_response["function_name"] == weather_tool["name"]:
     print(json.dumps(weather_data, indent=4))
 else:
     print("Function call not recognized.")
+print("\n")
 
+system_prompt = """You are a helpful and friendly climate expert.
+
+Answer the user's question by using the data provided."""
+user_prompt = "What is the weather in Langebaan?"
+context_prompt = json.dumps(weather_data)
+
+messages = [
+    {"role": "system", "content": system_prompt},
+    {"role": "user", "content": user_prompt},
+    {"role": "user", "content": context_prompt},
+]
+
+response = query(messages)
+print(f"Final response:\t\t{response}")
 print("\n")
